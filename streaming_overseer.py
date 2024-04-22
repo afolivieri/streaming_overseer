@@ -88,6 +88,7 @@ async def main():
     word_patterns = load_patterns()
     channels = [x.strip() for x in open(CHANNELS_FILE, 'r').read().split(',')]
     channel_id = creds['channel_id']  # Use the channel ID from credentials
+    await client.send_message(channel_id, f"Listening to {', '.join(channels)}...")
 
     @client.on(events.NewMessage(chats=channels))
     async def handler(event):
