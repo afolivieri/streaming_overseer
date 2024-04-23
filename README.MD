@@ -56,6 +56,7 @@ The script uses several files for configuration:
   **Note: Separate keywords using commas. Keywords can span multiple lines for readability; newlines are ignored.**
 - `channels.txt`: List of channel usernames (the part after `t.me/`) to monitor
 - Separate channel names with commas, and feel free to list them across multiple lines for better readability. Newlines between names are ignored.
+
   **Note: Ensure you have joined any channel you wish to monitor.**
 
 ### Examples
