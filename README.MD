@@ -52,17 +52,23 @@ The script uses several files for configuration:
   - `**` allows up to six additional characters.
   - `#` at the start includes numeric characters (up to three).
   - `##` includes numeric characters (up to six).
-- `channels.txt`: List of channel usernames (the part after `t.me/`) to monitor (NB You need to JOIN the channel you want to monitor).
+
+  **Note: Separate keywords using commas. Keywords can span multiple lines for readability; newlines are ignored.**
+- `channels.txt`: List of channel usernames (the part after `t.me/`) to monitor
+- Separate channel names with commas, and feel free to list them across multiple lines for better readability. Newlines between names are ignored.
+  **Note: Ensure you have joined any channel you wish to monitor.**
 
 ### Examples
 
 - `keywords.txt`
   ```
-  hello*, world**, #123, ##123456, #or_any_combination**
+  hello*, world**, #123,
+  ##123456, #or_any_combination**
   ```
 - `channels.txt`
   ```
-  python, daily_news, target3, target4
+  python, daily_news,
+  target3, target4
   ```
 
 
@@ -77,7 +83,7 @@ python streaming_overseer.py
 ## Operational Details
 
 - If not yet saved, the script will ask for your API ID, API hash, phone number, username, and bot token. 
-- The script listens for new messages in the specified channels.
+- The script listens for new messages in the specified channels (You need to have joined the channels you intend to monitor).
 - If a message contains any of the specified keywords, it is forwarded to the private channel.
 - The script sends a startup message to the private channel when it begins monitoring.
 - Use Ctrl+C to safely shut down the monitoring tool.

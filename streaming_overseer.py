@@ -48,10 +48,15 @@ async def fetch_channel_id(credentials):
     return credentials
 
 
-def load_patterns():
-    with open(KEYWORDS_FILE, 'r', encoding='utf-8') as file:
-        keywords = [x.strip() for x in file.read().split(',')]
+def load_entries_from_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+        entries = [x.strip() for x in content.replace('\n', '').split(',') if x.strip()]
+    return entries
 
+
+def load_patterns():
+    keywords = load_entries_from_file(KEYWORDS_FILE)
     word_patterns = {}
     emoji_pattern = r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]'
 
@@ -74,7 +79,6 @@ def load_patterns():
     return word_patterns
 
 
-# Function to handle signals
 def signal_handler(signal, frame):
     print('Detected Ctrl+C! Gracefully shutting down.')
     exit(0)
@@ -86,7 +90,7 @@ async def main():
     await client.start(phone=creds['phone'])
 
     word_patterns = load_patterns()
-    channels = [x.strip() for x in open(CHANNELS_FILE, 'r').read().split(',')]
+    channels = load_entries_from_file(CHANNELS_FILE)
     channel_id = creds['channel_id']  # Use the channel ID from credentials
     await client.send_message(channel_id, f"Listening to {', '.join(channels)}...")
 
