@@ -52,7 +52,7 @@ The script uses several files for configuration:
   - `**` allows up to six additional characters.
   - `#` at the start includes numeric characters (up to three).
   - `##` includes numeric characters (up to six).
-- `channels.txt`: List of channel usernames (the part after `t.me/`) to monitor.
+- `channels.txt`: List of channel usernames (the part after `t.me/`) to monitor (NB You need to JOIN the channel you want to monitor).
 
 ### Examples
 
