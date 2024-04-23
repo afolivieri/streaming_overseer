@@ -12,7 +12,7 @@ This tool monitors specified Telegram channels for messages that contain certain
 
 Before you can use this tool, you need to set up a few things:
 
-1. **Python 3.8+** (Tested only on 3.12)
+1. **Python 3.8+** (Tested on 3.10+)
 2. **Telethon Library**
 3. **A Telegram API key and API Hash**
 4. **A Telegram Bot**
