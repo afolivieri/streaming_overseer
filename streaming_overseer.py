@@ -93,9 +93,16 @@ async def main():
     @client.on(events.NewMessage(chats=channels))
     async def handler(event):
         message_content = event.message.message if event.message else ""
-        for pattern in word_patterns.values():
-            if regex.search(pattern, message_content):
+        for word, pattern in word_patterns.items():
+            match = regex.search(pattern, message_content)
+            if match:
+                start_pos = max(match.start() - 20, 0)
+                end_pos = min(match.end() + 20, len(message_content))
+                context = message_content[start_pos:end_pos]
+                await client.send_message(channel_id, f"Keyword Match: {word}\nContext: {context}")
+                await asyncio.sleep(0.1)
                 await event.message.forward_to(channel_id)
+                await asyncio.sleep(0.1)
                 print(f'Forwarded Message: {message_content}')
                 break
 
