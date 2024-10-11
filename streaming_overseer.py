@@ -100,6 +100,9 @@ def load_patterns():
     return word_patterns
 
 
+def escape_markdown(text):
+    return regex.sub(r'(\*\*)', r'\\\1', text)
+
 
 async def shutdown(signal, client, loop):
     logging.info(f"Received exit signal {signal.name}...")
@@ -122,17 +125,50 @@ async def main():
         async def handler(event):
             try:
                 message_content = event.message.message if event.message else ""
+                word_counts = {}
+                first_match_contexts = {}
                 for word, pattern in word_patterns.items():
-                    for match in pattern.finditer(message_content):
-                        start_pos = max(match.start() - 20, 0)
-                        end_pos = min(match.end() + 20, len(message_content))
-                        context = message_content[start_pos:end_pos]
-                        await client.send_message(channel_id, f"Keyword Match from {event.chat.title}: {word}\nContext: {context}")
-                        await asyncio.sleep(0.1)
-                        await event.message.forward_to(channel_id)
-                        await asyncio.sleep(0.5)
-                        print(f'Forwarded Message: {message_content}')
-                        break
+                    matches = list(pattern.finditer(message_content))
+                    if matches:
+                        count = len(matches)
+                        word_counts[word] = count
+                        if len(first_match_contexts) < 3:
+                            if word not in first_match_contexts:
+                                first_match = matches[0]
+                                start_pos = first_match.start()
+                                end_pos = first_match.end()
+                                context_start = max(start_pos - 20, 0)
+                                context_end = min(end_pos + 20, len(message_content))
+                                context = message_content[context_start:context_end]
+                                first_match_contexts[word] = context
+
+                if word_counts:
+                    matched_words_with_counts = []
+                    for word, count in word_counts.items():
+                        if count > 1:
+                            matched_word = f"{word} ({count})"
+                        else:
+                            matched_word = word
+                        matched_word = escape_markdown(matched_word)
+                        matched_words_with_counts.append(matched_word)
+                    matched_words_str = ', '.join(matched_words_with_counts)
+                    contexts = []
+                    for word, context in first_match_contexts.items():
+                        word_escaped = escape_markdown(word)
+                        contexts.append(f"{word_escaped}: {context}")
+                    contexts_str = ";\n".join(contexts)
+                    context_label = "First three different match contexts"
+                    message_text = f"SCRIPT Keyword Match from {event.chat.title}: {matched_words_str}"
+                    if contexts:
+                        message_text += f"\n{context_label}:\n{contexts_str}"
+                    else:
+                        message_text += "\nNo contexts available."
+
+                    await client.send_message(channel_id, message_text)
+                    await asyncio.sleep(0.1)
+                    #await event.message.forward_to(channel_id)
+                    await asyncio.sleep(0.5)
+                    print(f'Forwarded Message: {message_content}')
             except Exception as e:
                 logging.error(f"Error in message handler: {e}")
 
