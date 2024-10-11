@@ -101,7 +101,7 @@ def load_patterns():
 
 
 def escape_markdown(text):
-    return regex.sub(r'(\*\*)', r'\\\1', text)
+    return regex.sub(r'(\*\*)', '* *', text)
 
 
 async def shutdown(signal, client, loop):
