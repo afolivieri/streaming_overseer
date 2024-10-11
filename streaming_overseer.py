@@ -132,11 +132,13 @@ async def main():
                         context = message_content[start_pos:end_pos]
                         words.append(word)
                         contexts.append(context)
-                await client.send_message(channel_id, f"Keyword Match: {', '.join(words)}\nContext: {', '.join(contexts)}")
-                await asyncio.sleep(0.1)
-                await event.message.forward_to(channel_id)
-                await asyncio.sleep(0.5)
-                print(f'Forwarded Message: {message_content}')
+                        break
+                if words:
+                    await client.send_message(channel_id, f"Keyword Match: {', '.join(words)}\nContext: {', '.join(contexts)}")
+                    await asyncio.sleep(0.1)
+                    await event.message.forward_to(channel_id)
+                    await asyncio.sleep(0.5)
+                    print(f'Forwarded Message: {message_content}')
             except Exception as e:
                 logging.error(f"Error in message handler: {e}")
 
