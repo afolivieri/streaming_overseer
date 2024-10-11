@@ -7,7 +7,6 @@ from telethon import TelegramClient, events
 import logging
 import traceback
 import platform
-import sys
 
 # Configuration files
 CREDENTIALS_FILE = 'credentials.json'
@@ -128,7 +127,7 @@ async def main():
                         start_pos = max(match.start() - 20, 0)
                         end_pos = min(match.end() + 20, len(message_content))
                         context = message_content[start_pos:end_pos]
-                        await client.send_message(channel_id, f"Keyword Match: {word}\nContext: {context}")
+                        await client.send_message(channel_id, f"Keyword Match from {event.chat.title}: {word}\nContext: {context}")
                         await asyncio.sleep(0.1)
                         await event.message.forward_to(channel_id)
                         await asyncio.sleep(0.5)
