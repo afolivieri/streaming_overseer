@@ -91,7 +91,7 @@ def load_patterns():
             word = word[1:]
             pattern = rf'(?i)(?:{emoji_pattern})*(?<=\b\d{{0,3}}){regex.escape(word)}\b'
         else:
-            pattern = rf'(?i)(?:{emoji_pattern})*{regex.escape(word)}'
+            pattern = rf'\b(?i)(?:{emoji_pattern})*{regex.escape(word)}\b'
         try:
             compiled = regex.compile(pattern)
             word_patterns[original_word] = compiled
