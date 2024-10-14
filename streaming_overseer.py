@@ -80,16 +80,16 @@ def load_patterns():
         original_word = word
         if word.endswith('**'):
             word = word[:-2]
-            pattern = rf'(?i)(?:{emoji_pattern})*{regex.escape(word)}\p{{L}}{{0,6}}'
+            pattern = rf'\b(?i)(?:{emoji_pattern})*{regex.escape(word)}\p{{L}}{{0,6}}\b'
         elif word.endswith('*'):
             word = word[:-1]
-            pattern = rf'(?i)(?:{emoji_pattern})*{regex.escape(word)}\p{{L}}{{0,3}}'
+            pattern = rf'\b(?i)(?:{emoji_pattern})*{regex.escape(word)}\p{{L}}{{0,3}}\b'
         elif word.startswith('##'):
             word = word[2:]
-            pattern = rf'(?i)(?:{emoji_pattern})*\d{{0,6}}{regex.escape(word)}'
+            pattern = rf'(?i)(?:{emoji_pattern})*(?<=\b\d{{0,6}}){regex.escape(word)}\b'
         elif word.startswith('#'):
             word = word[1:]
-            pattern = rf'(?i)(?:{emoji_pattern})*\d{{0,3}}{regex.escape(word)}'
+            pattern = rf'(?i)(?:{emoji_pattern})*(?<=\b\d{{0,3}}){regex.escape(word)}\b'
         else:
             pattern = rf'(?i)(?:{emoji_pattern})*{regex.escape(word)}'
         try:
