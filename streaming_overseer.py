@@ -158,7 +158,7 @@ async def main():
                         contexts.append(f"{word_escaped}: {context}")
                     contexts_str = ";\n".join(contexts)
                     context_label = "First three different match contexts"
-                    message_text = f"SCRIPT Keyword Match from {event.chat.title}: {matched_words_str}"
+                    message_text = f"Keyword Match from {event.chat.title}: {matched_words_str}"
                     if contexts:
                         message_text += f"\n{context_label}:\n{contexts_str}"
                     else:
@@ -166,7 +166,7 @@ async def main():
 
                     await client.send_message(channel_id, message_text)
                     await asyncio.sleep(0.1)
-                    #await event.message.forward_to(channel_id)
+                    await event.message.forward_to(channel_id)
                     await asyncio.sleep(0.5)
                     print(f'Forwarded Message: {message_content}')
             except Exception as e:
